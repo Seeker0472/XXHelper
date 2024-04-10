@@ -1,3 +1,4 @@
+import random
 from time import sleep
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -178,6 +179,47 @@ def challenge_over():
     try:
         driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"挑战结束\")")
         driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"结束本局\")").click()
+        return True
+    except:
+        return False
+
+
+def is_two():
+    """
+    判断是否是二人擂台
+    :return:
+    """
+    try:
+        driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"随机匹配\")")
+        return True
+    except:
+        return False
+
+
+def pair():
+    """
+    多人擂台
+    :return:
+    """
+    while True:
+        try:
+            if is_finished():
+                break
+            list_view = driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR,
+                                            value="new UiSelector().className(\"android.widget.ListView\")")
+
+            child_elements = list_view.find_elements(By.XPATH, "./android.widget.ListView/*")
+
+            # 随机选择一个
+            child_elements[random.randint(0, len(child_elements) - 1)].click()
+            sleep(2)
+        except:
+            sleep(4)
+
+
+def is_finished():
+    try:
+        driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"继续挑战\")")
         return True
     except:
         return False
