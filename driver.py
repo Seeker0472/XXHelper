@@ -9,7 +9,9 @@ capabilities = dict(
     appPackage='cn.xuexi.android',
     appActivity='com.alibaba.android.rimet.biz.SplashActivity',
     platformVersion="14",
-    noReset=True
+    noReset=True,
+    unicodeKeyboard=True,
+    resetKeyboard=True
 )
 appium_server_url = 'http://localhost:4723'
 
