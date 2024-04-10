@@ -1,3 +1,4 @@
+import random
 import time
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -51,6 +52,37 @@ def try_article(item, text):
     cur.execute("insert into Read (title,time) values (?,?)", (text, time_now))
     conn.commit()
     item.click()
-    time.sleep(sleep_time)
+    time.sleep(5)
+    if is_video():
+        driver.back()
+        return 0
+    # time.sleep(sleep_time)
+    fake_swipe(sleep_time)
     driver.back()
     return sleep_time
+
+
+def fake_swipe(sleep_time):
+    """
+    模拟滑动
+    :param slee_time:
+    :return:
+    """
+    while sleep_time > 0:
+        rand = random.randint(0, 30)
+        swipe.perform_swipe_down(random.randint(-100, 300))
+        sleep_time -= rand
+        time.sleep(rand)
+
+
+def is_video():
+    """
+    判断是否是视频
+    :return:
+    """
+    try:
+        driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"播放\")")
+        return True
+    except:
+        return False
+    pass
