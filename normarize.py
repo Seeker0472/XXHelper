@@ -1,7 +1,9 @@
 from time import sleep
 
 from appium.webdriver.common.appiumby import AppiumBy
+from selenium.webdriver.common.by import By
 
+import swipe
 from driver import driver
 
 
@@ -55,3 +57,45 @@ def exist_main_button():
         except:
             pass
         return False
+
+
+def to_sep_page(page_name,text):
+    """
+    进入指定页面
+    :param text:
+    :param page_name:
+    :return:
+    """
+    to_normal()
+
+    # 点击积分
+    driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().resourceId("
+                                                               "\"cn.xuexi.android:id/ll_comm_head_score\")").click()
+    sleep(2)
+
+    proceed = None
+    # 找到指定模块并点击进入
+    while proceed is None:
+        # 所有子节点(积分项)
+        elements = (driver.find_elements(By.XPATH, '//android.widget.ListView')[0]
+                    .find_elements(By.XPATH, './android.widget.ListView/android.view.View'))
+        for item in elements:
+
+            try:
+                title = item.find_elements(by=AppiumBy.CLASS_NAME, value="android.view.View")[0].text
+                print(title)
+                if title != page_name:
+                    continue
+                score = item.find_element(by=By.XPATH, value="./android.view.View/android.view.View[4]").find_elements(
+                    by=AppiumBy.CLASS_NAME, value="android.view.View")[0].text
+                proceed = item.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\""+text+"\")")
+                if score > 4:
+                    return
+            except:
+                continue
+            print(title, score)
+        # 如果当前页没有找到趣味答题,则向下滑动
+        if proceed is None:
+            swipe.perform_swipe_down(400)
+    # 点击进入
+    proceed.click()
