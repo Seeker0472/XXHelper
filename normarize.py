@@ -1,3 +1,5 @@
+from time import sleep
+
 from appium.webdriver.common.appiumby import AppiumBy
 
 from driver import driver
@@ -46,4 +48,10 @@ def exist_main_button():
         return True
     except:
         driver.back()
+        sleep(1)
+        try:
+            driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR,
+                                value="new UiSelector().text(\"退出\")").click()
+        except:
+            pass
         return False

@@ -70,6 +70,12 @@ def check_type():
     if is_challenge():
         print("挑战答题")
         challenge()
+    else:
+        if is_muti():
+            print("多人擂台")
+            # 进入多人擂台
+            driver.find_element(by=By.XPATH, value="//android.view.View[@text=\"随机匹配\"]/../android.view.View").click()
+            pair()
 
 
 def is_challenge():
@@ -184,9 +190,9 @@ def challenge_over():
         return False
 
 
-def is_two():
+def is_muti():
     """
-    判断是否是二人擂台
+    判断是否是多人擂台
     :return:
     """
     try:

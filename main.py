@@ -5,7 +5,7 @@ from check_info import check_score
 from read import start as read_start
 from quiz_every_day import start as eq_start
 from ints_quiz import start as ints_start
-
+from driver import driver
 
 def main():
     start()
@@ -36,3 +36,5 @@ if __name__ == '__main__':
     except Exception as e:
         sleep(10)
         main()
+    finally:
+        driver.quit()

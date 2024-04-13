@@ -20,7 +20,6 @@ def start(lasting_time=12):
     :return:
     """
 
-
     normarize.to_normal()
     select_article()
 
@@ -31,7 +30,7 @@ def select_article(lasting_time):
     :return:
     """
     time_total = 0
-    while time_total <= lasting_time*65:
+    while time_total <= lasting_time * 65:
         elements = driver.find_elements(by=By.XPATH,
                                         value="//android.widget.ListView/android.widget.FrameLayout")
         for item in elements:
