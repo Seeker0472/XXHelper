@@ -8,7 +8,7 @@ import swipe
 import normarize
 
 
-def start():
+def start(lasting_time=12):
     """
     开始,进入视频学习,然后调用flashing()刷视频
     :return:
@@ -19,18 +19,19 @@ def start():
     child_elements = vid_list.find_elements(By.XPATH, "./android.widget.ListView/android.widget.FrameLayout")
     child_elements[1].click()
     sleep(2)
-    flashing()
+    flashing(lasting_time)
 
 
-def flashing():
+def flashing(lasting_time):
     """
     定时划到下一个视频
     :return:
     """
-    for i in range(30):
+    for i in range(lasting_time * 2 + 2):
         conti()
         sleep(30)
-        swipe.perform_swipe_down(500, 600)
+        print(i)
+        swipe.perform_swipe_down(500, 500)
 
 
 def conti():

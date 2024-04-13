@@ -20,7 +20,7 @@ def check_page():
     swipe.perform_swipe_down(1000)
     # sleep(3)
     # element = driver.find_element(By.XPATH, '//android.widget.ListView/android.view.View[2]').find_elements(by=AppiumBy.CLASS_NAME, value="android.view.View")[0]
-
+    sleep(5)
     result = dict()
     # 所有子节点(积分项)
     elements = driver.find_elements(By.XPATH, '//android.widget.ListView')[0].find_elements(By.XPATH,

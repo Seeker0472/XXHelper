@@ -16,10 +16,10 @@ def start():
         result = check_score()
         print(result['我要选读文章'])
         if result['我要选读文章'] < 12:
-            read_start()
+            read_start(12-result['我要选读文章'])
             sleep(1)
         if result['我要视听学习'] < 12:
-            vid_start()
+            vid_start(12-result['我要视听学习'])
             sleep(1)
         if result['每日答题'] < 5:
             eq_start()
@@ -31,4 +31,8 @@ def start():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as e:
+        sleep(10)
+        main()

@@ -14,22 +14,24 @@ conn = sqlite3.connect("main.sqlite")
 cur = conn.cursor()
 
 
-def start():
+def start(lasting_time=12):
     """
     开始
     :return:
     """
+
+
     normarize.to_normal()
     select_article()
 
 
-def select_article():
+def select_article(lasting_time):
     """
     遍历界面上的文章,调用try_article尝试读文章
     :return:
     """
     time_total = 0
-    while time_total <= 60 * 15:
+    while time_total <= lasting_time*65:
         elements = driver.find_elements(by=By.XPATH,
                                         value="//android.widget.ListView/android.widget.FrameLayout")
         for item in elements:
@@ -44,6 +46,7 @@ def select_article():
 
 
 def try_article(item, text):
+    print(text)
     sleep_time = 60 * 3
     time_now = str(time.strftime('%Y-%m-%d', time.localtime(time.time())))
     times = cur.execute("select COUNT(*) from Read where title=?", (text,)).fetchall()[0][0]
@@ -59,17 +62,20 @@ def try_article(item, text):
     # time.sleep(sleep_time)
     fake_swipe(sleep_time)
     driver.back()
+    quit_bookshelf()
     return sleep_time
 
 
 def fake_swipe(sleep_time):
     """
     模拟滑动
-    :param slee_time:
+    :param sleep_time:
     :return:
     """
     while sleep_time > 0:
         rand = random.randint(0, 30)
+        print("剩余时间:", sleep_time)
+        # TODO:修改时间或者滑动距离,避免被识别为点击
         swipe.perform_swipe_down(random.randint(-100, 300))
         sleep_time -= rand
         time.sleep(rand)
@@ -86,3 +92,14 @@ def is_video():
     except:
         return False
     pass
+
+
+def quit_bookshelf():
+    """
+    退出书架
+    :return:
+    """
+    try:
+        driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"取消\")").click()
+    except:
+        pass
