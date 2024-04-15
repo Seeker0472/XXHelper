@@ -1,3 +1,4 @@
+import time
 from time import sleep
 
 from vid import start as vid_start
@@ -8,9 +9,22 @@ from ints_quiz import start as ints_start
 from driver import driver
 from local_channel import start as local_start
 
+last_exception_time = None
+
 
 def main():
-    start()
+    global last_exception_time
+    try:
+        start()
+    except Exception as e:
+        if last_exception_time is not None:
+            if time.time() - last_exception_time < 60:
+                return
+        last_exception_time = time.time()
+        print(e)
+        sleep(10)
+        main()
+    driver.quit()
 
 
 def start():
@@ -35,10 +49,4 @@ def start():
 
 
 if __name__ == '__main__':
-    try:
-        main()
-    except Exception as e:
-        sleep(10)
-        main()
-    finally:
-        driver.quit()
+    main()

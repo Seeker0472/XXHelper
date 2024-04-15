@@ -21,7 +21,7 @@ def start(lasting_time=12):
     """
 
     normarize.to_normal()
-    select_article()
+    select_article(lasting_time)
 
 
 def select_article(lasting_time):

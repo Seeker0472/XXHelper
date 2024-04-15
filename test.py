@@ -10,11 +10,11 @@ import subscribe
 
 # swipe.perform_swipe()
 # check_info.check_score()
-# ints_quiz.challenge()
+ints_quiz.challenge()
 # vid.start()
 # read.start()
 # ints_quiz.pair()
 
 # quiz_every_day.answer()
 # local_channel.start()
-subscribe.start()
+# subscribe.start()

@@ -74,7 +74,13 @@ def check_type():
         if is_muti():
             print("多人擂台")
             # 进入多人擂台
-            driver.find_element(by=By.XPATH, value="//android.view.View[@text=\"随机匹配\"]/../android.view.View").click()
+            driver.find_element(by=By.XPATH,
+                                value="//android.view.View[@text=\"随机匹配\"]/../android.view.View").click()
+            pair()
+        if is_four():
+            print("四人赛")
+            driver.find_element(by=By.XPATH,
+                                value="//android.view.View[@text=\"开始比赛\"]").click()
             pair()
 
 
@@ -168,8 +174,8 @@ def challenge():
             cur.execute("update Answers set ok=1 where text_id=? and content=?", (text_id, choice,))
             conn.commit()
             sleep(2)
-            driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"再来一局\")").click()
-            sleep(4)
+            # driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"再来一局\")").click()
+            # sleep(4)
             # break
         else:
             cur.execute("update Answers set ok=1 where text_id=? ", (text_id,))
@@ -184,7 +190,11 @@ def challenge_over():
     """
     try:
         driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"挑战结束\")")
-        driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"结束本局\")").click()
+        try:
+            driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"立即复活\")").click()
+            sleep(2)
+        except:
+            pass
         return True
     except:
         return False
@@ -197,6 +207,18 @@ def is_muti():
     """
     try:
         driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"随机匹配\")")
+        return True
+    except:
+        return False
+
+
+def is_four():
+    """
+    判断是否是四人赛
+    :return:
+    """
+    try:
+        driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"开始比赛\")")
         return True
     except:
         return False
