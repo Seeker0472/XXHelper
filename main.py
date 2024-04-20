@@ -25,7 +25,6 @@ def main():
         print(e)
         sleep(10)
         main()
-    driver.quit()
 
 
 def start():
