@@ -23,40 +23,10 @@ def start():
     进入答题界面,然后调用check_type()判断是什么类型的答题
     :return:
     """
-    # 切换到主界面
-    normarize.to_normal()
-    # 点击积分
-    driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().resourceId("
-                                                               "\"cn.xuexi.android:id/ll_comm_head_score\")").click()
-    sleep(2)
 
-    proceed = None
-    # 找到趣味答题并点击进入
-    while proceed is None:
-        # 所有子节点(积分项)
-        elements = (driver.find_elements(By.XPATH, '//android.widget.ListView')[0]
-                    .find_elements(By.XPATH, './android.widget.ListView/android.view.View'))
-        for item in elements:
-            try:
-                title = item.find_elements(by=AppiumBy.CLASS_NAME, value="android.view.View")[0].text
-                print(title)
-                if title != "趣味答题":
-                    continue
-                score = item.find_element(by=By.XPATH, value="./android.view.View/android.view.View[4]").find_elements(
-                    by=AppiumBy.CLASS_NAME, value="android.view.View")[0].text
-                proceed = item.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"去看看\")")
-                if score > 7:
-                    return
-            except:
-                continue
-            print(title, score)
-        # 如果当前页没有找到趣味答题,则向下滑动
-        if proceed is None:
-            swipe.perform_swipe_down(400)
-    # 点击进入
-    proceed.click()
+    normarize.to_sep_page("趣味答题", "去看看")
 
-    sleep(2)
+    sleep(10)
 
     check_type()
 

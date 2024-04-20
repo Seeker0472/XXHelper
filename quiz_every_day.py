@@ -2,6 +2,7 @@ from time import sleep
 
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
 
 import normarize
 from driver import driver
@@ -13,38 +14,11 @@ def start():
     开始
     :return:
     """
-    # 切换到主界面
-    normarize.to_normal()
-    # 点击积分
-    driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().resourceId("
-                                                               "\"cn.xuexi.android:id/ll_comm_head_score\")").click()
-    sleep(2)
+    normarize.to_sep_page("每日答题", "去答题")
 
-    proceed = None
-    # 找到每日答题并点击进入
-    while proceed is None:
-        # 所有子节点(积分项)
-        elements = (driver.find_elements(By.XPATH, '//android.widget.ListView')[0]
-                    .find_elements(By.XPATH, './android.widget.ListView/android.view.View'))
-        for item in elements:
-            try:
-                title = item.find_elements(by=AppiumBy.CLASS_NAME, value="android.view.View")[0].text
-                print(title)
-                if title != "每日答题":
-                    continue
-                score = item.find_element(by=By.XPATH, value="./android.view.View/android.view.View[4]").find_elements(
-                    by=AppiumBy.CLASS_NAME, value="android.view.View")[0].text
-                proceed = item.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"去答题\")")
-                if score > 4:
-                    return
-            except:
-                continue
-            print(title, score)
-        # 如果当前页没有找到趣味答题,则向下滑动
-        if proceed is None:
-            swipe.perform_swipe_down(400)
-    # 点击进入
-    proceed.click()
+    WebDriverWait(driver, 10).until(lambda x: x.find_element(AppiumBy.ANDROID_UIAUTOMATOR,
+                                                             "new UiSelector().text(\"查看提示\").instance(0)"))
+
     answer()
 
 
@@ -240,16 +214,21 @@ def complete():
     提交,检查是否正确
     :return:
     """
+    sleep(1)
     try:
         driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"确定\")").click()
         sleep(2)
     # 到底要不要catch?
-    except:
+    except Exception as e:
+        print("Function complete")
+        print(e)
         pass
 
     sleep(2)
     try:
         driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"下一题\")").click()
-    except:
+    except Exception as e:
+        print("Function complete1")
+        print(e)
         pass
 

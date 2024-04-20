@@ -2,6 +2,8 @@ from time import sleep
 
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 import swipe
 from driver import driver
@@ -56,10 +58,15 @@ def exist_main_button():
                                 value="new UiSelector().text(\"退出\")").click()
         except:
             pass
+        try:
+            driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR,
+                                value="new UiSelector().text(\"取消\")").click()
+        except:
+            pass
         return False
 
 
-def to_sep_page(page_name,text):
+def to_sep_page(page_name, text):
     """
     进入指定页面
     :param text:
@@ -71,7 +78,12 @@ def to_sep_page(page_name,text):
     # 点击积分
     driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().resourceId("
                                                                "\"cn.xuexi.android:id/ll_comm_head_score\")").click()
-    sleep(2)
+    # sleep(2)
+    # wait = WebDriverWait(driver, 20)  # 等待最多20秒
+
+    # 等待页面加载完成
+    WebDriverWait(driver, 10).until(lambda x: x.find_element(AppiumBy.ANDROID_UIAUTOMATOR,
+                                                             "new UiSelector().text(\"已完成\").instance(0)"))
 
     proceed = None
     # 找到指定模块并点击进入
@@ -88,14 +100,17 @@ def to_sep_page(page_name,text):
                     continue
                 score = item.find_element(by=By.XPATH, value="./android.view.View/android.view.View[4]").find_elements(
                     by=AppiumBy.CLASS_NAME, value="android.view.View")[0].text
-                proceed = item.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\""+text+"\")")
-                if score > 4:
-                    return
+                proceed = item.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR,
+                                            value="new UiSelector().text(\"" + text + "\")")
+                # if score > 4:
+                #     return
             except:
                 continue
             print(title, score)
+
         # 如果当前页没有找到趣味答题,则向下滑动
-        if proceed is None:
+        if proceed is None or (driver.get_window_size()['height'] - proceed.location['y']) < driver.get_window_size()['height'] / 10:
+            proceed = None
             swipe.perform_swipe_down(400)
     # 点击进入
     proceed.click()

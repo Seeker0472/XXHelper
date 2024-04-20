@@ -31,13 +31,16 @@ def select_article(lasting_time):
     """
     time_total = 0
     while time_total <= lasting_time * 65:
+        # elements = driver.find_elements(by=By.XPATH,
+        #                                 value="//android.widget.ListView/android.widget.FrameLayout")
         elements = driver.find_elements(by=By.XPATH,
-                                        value="//android.widget.ListView/android.widget.FrameLayout")
+                                        value="//androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout")
         for item in elements:
             try:
                 text = item.find_element(by=By.XPATH,
                                          value="./android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView").text
-            except:
+            except Exception as e:
+                print(e)
                 continue
             time_total += try_article(item, text)
             print(text)
@@ -58,7 +61,6 @@ def try_article(item, text):
     if is_video():
         driver.back()
         return 0
-    # time.sleep(sleep_time)
     fake_swipe(sleep_time)
     driver.back()
     quit_bookshelf()

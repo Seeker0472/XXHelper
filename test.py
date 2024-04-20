@@ -10,7 +10,7 @@ import subscribe
 
 # swipe.perform_swipe()
 # check_info.check_score()
-ints_quiz.challenge()
+# ints_quiz.check_type()
 # vid.start()
 # read.start()
 # ints_quiz.pair()
@@ -18,3 +18,7 @@ ints_quiz.challenge()
 # quiz_every_day.answer()
 # local_channel.start()
 # subscribe.start()
+
+print("init FInish")
+
+normarize.to_sep_page("趣味答题","去看看")

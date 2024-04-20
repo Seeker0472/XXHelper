@@ -14,9 +14,11 @@ def start(lasting_time=12):
     :return:
     """
     normarize.to_bai_ling()
+    # vid_list = driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR,
+    #                                value="new UiSelector().className(\"android.widget.ListView\")")
     vid_list = driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR,
-                                   value="new UiSelector().className(\"android.widget.ListView\")")
-    child_elements = vid_list.find_elements(By.XPATH, "./android.widget.ListView/android.widget.FrameLayout")
+                                   value="new UiSelector().className(\"androidx.recyclerview.widget.RecyclerView\")")
+    child_elements = vid_list.find_elements(By.XPATH, "./androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout")
     child_elements[1].click()
     sleep(2)
     flashing(lasting_time)
