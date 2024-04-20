@@ -1,5 +1,6 @@
 import time
 from time import sleep
+import atexit
 
 from vid import start as vid_start
 from check_info import check_score
@@ -50,5 +51,12 @@ def start():
         print(result)
 
 
+def exit_handler():
+    driver.terminate_app('cn.xuexi.android')
+    driver.quit()
+    print("exit")
+
+
 if __name__ == '__main__':
+    atexit.register(exit_handler)
     main()

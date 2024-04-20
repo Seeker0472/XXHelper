@@ -2,7 +2,7 @@ from driver import driver
 import random
 
 
-def perform_swipe_down(dist, duration=random.randint(100, 600)):
+def perform_swipe_down(dist, duration=random.randint(300, 600)):
     """
     向下滑动TODO:让数据更合法
     :param dist:
@@ -17,9 +17,10 @@ def perform_swipe_down(dist, duration=random.randint(100, 600)):
     xy = {}
     xy["start_x"] = int(window_size['width'] / 2) + random.randint(0, 50)
     xy["end_x"] = int(window_size['width'] / 2) + random.randint(-50, 20)
-    xy["end_y"] = int(window_size['height'] / 3)
-    xy["start_y"] = int(xy["end_y"] + dist)
+    xy["end_y"] = end_y = int(window_size['height'] / 3)
+    xy["start_y"] = int(end_y + dist)
     xy = correct_number(xy)
+    # TODO:catch  io.appium.uiautomator2.common.exceptions.InvalidElementStateException: Unable to perform W3C actions. Check the logcat output for possible error reports and make sure your input actions chain is valid.
     driver.swipe(xy["start_x"], xy["start_y"], xy["end_x"], xy["end_y"], duration)
 
 

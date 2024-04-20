@@ -45,6 +45,7 @@ def select_article(lasting_time):
             time_total += try_article(item, text)
             print(text)
         swipe.perform_swipe_down(500)
+        time.sleep(1)
 
 
 def try_article(item, text):
@@ -76,8 +77,9 @@ def fake_swipe(sleep_time):
     while sleep_time > 0:
         rand = random.randint(0, 30)
         print("剩余时间:", sleep_time)
-        # TODO:修改时间或者滑动距离,避免被识别为点击
-        swipe.perform_swipe_down(random.randint(-100, 300))
+        rand_swipe = random.randint(200, 400) * random.choice([-1, 1])
+        # swipe.perform_swipe_down(random.randint(-100, 300))
+        swipe.perform_swipe_down(rand_swipe)
         sleep_time -= rand
         time.sleep(rand)
 

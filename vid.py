@@ -13,6 +13,9 @@ def start(lasting_time=12):
     开始,进入视频学习,然后调用flashing()刷视频
     :return:
     """
+    # 降低10次音量
+    for i in range(10):
+        driver.press_keycode(25)
     normarize.to_bai_ling()
     # vid_list = driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR,
     #                                value="new UiSelector().className(\"android.widget.ListView\")")
