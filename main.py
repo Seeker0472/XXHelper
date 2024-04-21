@@ -2,6 +2,8 @@ import time
 from time import sleep
 import atexit
 
+from selenium.common import WebDriverException
+
 from vid import start as vid_start
 from check_info import check_score
 from read import start as read_start
@@ -51,9 +53,13 @@ def start():
 
 
 def exit_handler():
-    driver.terminate_app('cn.xuexi.android')
+    # TODO:WTF??
+    try:
+        driver.terminate_app('cn.xuexi.android')
+    except WebDriverException as e:
+        pass
     driver.quit()
-    print("exit")
+    print("exit normally")
 
 
 if __name__ == '__main__':

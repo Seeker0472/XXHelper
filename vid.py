@@ -21,7 +21,8 @@ def start(lasting_time=12):
     #                                value="new UiSelector().className(\"android.widget.ListView\")")
     vid_list = driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR,
                                    value="new UiSelector().className(\"androidx.recyclerview.widget.RecyclerView\")")
-    child_elements = vid_list.find_elements(By.XPATH, "./androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout")
+    child_elements = vid_list.find_elements(By.XPATH,
+                                            "./androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout")
     child_elements[1].click()
     sleep(2)
     flashing(lasting_time)
@@ -36,7 +37,8 @@ def flashing(lasting_time):
         conti()
         sleep(30)
         print(i)
-        swipe.perform_swipe_down(500, 500)
+        # swipe.perform_swipe_down(500, 500)
+        swipe.perform_swipe_down_percent(40, 500)
 
 
 def conti():

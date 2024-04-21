@@ -1,4 +1,5 @@
 import check_info
+import driver
 import swipe
 import normarize
 import ints_quiz
@@ -21,4 +22,7 @@ import subscribe
 
 print("init FInish")
 
-normarize.to_sep_page("趣味答题","去看看")
+# normarize.to_sep_page("趣味答题","去看看")
+# print(dir(driver.driver))
+
+print(driver.driver.page_source)

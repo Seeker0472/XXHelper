@@ -111,6 +111,7 @@ def to_sep_page(page_name, text):
         # 如果当前页没有找到趣味答题,则向下滑动
         if proceed is None or (driver.get_window_size()['height'] - proceed.location['y']) < driver.get_window_size()['height'] / 10:
             proceed = None
-            swipe.perform_swipe_down(400)
+            # 按照屏幕高度的5%向下滑动
+            swipe.perform_swipe_down_percent(5)
     # 点击进入
     proceed.click()

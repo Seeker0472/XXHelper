@@ -158,6 +158,7 @@ def challenge_over():
     判断是否挑战结束,如果挑战结束,则点击结束本局
     :return:
     """
+    # TODO: Infinite Loop!
     try:
         driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"挑战结束\")")
         try:

@@ -1,10 +1,40 @@
+from time import sleep
+
+from selenium.common import InvalidElementStateException
+
 from driver import driver
 import random
 
 
 def perform_swipe_down(dist, duration=random.randint(300, 600)):
     """
-    向下滑动TODO:让数据更合法
+    执行向下滑动,如果出现异常(在运行速度较慢的设备上连续滑动可能会触发)则等待3秒后再次尝试
+    :param duration:
+    :param dist:
+    :return:
+    """
+    try:
+        down_swipe(dist, duration)
+    except InvalidElementStateException:
+        sleep(3)
+        down_swipe(dist, duration)
+
+
+def perform_swipe_down_percent(percent, duration=random.randint(300, 600)):
+    """
+    执行向下滑动,按照屏幕百分比
+    :param duration:
+    :param percent:
+    :return:
+    """
+    if percent > 100 or percent < -100:
+        raise ValueError("滑动的百分比应该在 [-100,100] 之间")
+    perform_swipe_down(driver.get_window_size()['height'] * percent / 100, duration)
+
+
+def down_swipe(dist, duration=random.randint(300, 600)):
+    """
+    向下滑动
     :param dist:
     :param duration:
     :return:
@@ -30,7 +60,7 @@ def correct_number(number):
     :param number:
     :return:
     """
-
+    # TODO:减去底部和顶部侧边栏
     while number["start_x"] > driver.get_window_size()['width']:
         number["start_x"] -= 10
     while number["start_y"] > driver.get_window_size()['height']:
