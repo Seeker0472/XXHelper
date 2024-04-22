@@ -47,7 +47,7 @@ def start():
         if result['本地频道'] != 1:
             local_start()
             sleep(1)
-        if result['我要选读文章'] + result['我要视听学习'] + result['每日答题'] + result['趣味答题'] >= 36:
+        if result['我要选读文章'] + result['我要视听学习'] + result['每日答题'] + result['趣味答题'] >= 39:
             return "All Done!"
         print(result)
 

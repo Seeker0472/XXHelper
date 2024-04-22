@@ -1,6 +1,7 @@
 from time import sleep
 
 from appium.webdriver.common.appiumby import AppiumBy
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
@@ -219,16 +220,16 @@ def complete():
         driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"确定\")").click()
         sleep(2)
     # 到底要不要catch?
-    except Exception as e:
-        print("Function complete")
-        print(e)
+    except NoSuchElementException as e:
+        # print("Function complete")
+        # print(e)
         pass
 
     sleep(2)
     try:
         driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"下一题\")").click()
-    except Exception as e:
-        print("Function complete1")
-        print(e)
+    except NoSuchElementException as e:
+        # print("Function complete1")
+        # print(e)
         pass
 

@@ -2,6 +2,7 @@ import random
 from time import sleep
 
 from appium.webdriver.common.appiumby import AppiumBy
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 
 from driver import driver
@@ -14,7 +15,11 @@ import ask_gpt
 conn = sqlite3.connect('main.sqlite')
 cur = conn.cursor()
 
+# 是否询问GPT
 GPT = True
+
+# 是否使用CV,否则乱选(多人挑战)
+CV = False
 
 
 def start():
@@ -46,12 +51,18 @@ def check_type():
             # 进入多人擂台
             driver.find_element(by=By.XPATH,
                                 value="//android.view.View[@text=\"随机匹配\"]/../android.view.View").click()
-            pair()
+            if CV:
+                pass
+            else:
+                pair()
         if is_four():
             print("四人赛")
             driver.find_element(by=By.XPATH,
                                 value="//android.view.View[@text=\"开始比赛\"]").click()
-            pair()
+            if CV:
+                pass
+            else:
+                pair()
 
 
 def is_challenge():
@@ -62,7 +73,7 @@ def is_challenge():
     try:
         driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"挑战答题\")")
         return True
-    except:
+    except NoSuchElementException:
         return False
 
 
@@ -164,10 +175,10 @@ def challenge_over():
         try:
             driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"立即复活\")").click()
             sleep(2)
-        except:
+        except NoSuchElementException:
             pass
         return True
-    except:
+    except NoSuchElementException:
         return False
 
 
@@ -179,7 +190,7 @@ def is_muti():
     try:
         driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"随机匹配\")")
         return True
-    except:
+    except NoSuchElementException:
         return False
 
 
@@ -191,7 +202,7 @@ def is_four():
     try:
         driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"开始比赛\")")
         return True
-    except:
+    except NoSuchElementException:
         return False
 
 
@@ -212,7 +223,7 @@ def pair():
             # 随机选择一个
             child_elements[random.randint(0, len(child_elements) - 1)].click()
             sleep(2)
-        except:
+        except NoSuchElementException:
             sleep(4)
 
 
@@ -220,5 +231,5 @@ def is_finished():
     try:
         driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"继续挑战\")")
         return True
-    except:
+    except NoSuchElementException:
         return False

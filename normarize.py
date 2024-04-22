@@ -73,6 +73,7 @@ def to_sep_page(page_name, text):
     :param page_name:
     :return:
     """
+    print("准备进入页面: " + page_name)
     to_normal()
 
     # 点击积分
@@ -95,7 +96,7 @@ def to_sep_page(page_name, text):
 
             try:
                 title = item.find_elements(by=AppiumBy.CLASS_NAME, value="android.view.View")[0].text
-                print(title)
+                # print(title)
                 if title != page_name:
                     continue
                 score = item.find_element(by=By.XPATH, value="./android.view.View/android.view.View[4]").find_elements(
@@ -106,12 +107,12 @@ def to_sep_page(page_name, text):
                 #     return
             except:
                 continue
-            print(title, score)
+            # print(title, score)
 
         # 如果当前页没有找到趣味答题,则向下滑动
         if proceed is None or (driver.get_window_size()['height'] - proceed.location['y']) < driver.get_window_size()['height'] / 10:
             proceed = None
             # 按照屏幕高度的5%向下滑动
-            swipe.perform_swipe_down_percent(5)
+            swipe.perform_swipe_down_percent(10)
     # 点击进入
     proceed.click()

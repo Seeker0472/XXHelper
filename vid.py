@@ -1,3 +1,4 @@
+import random
 from time import sleep
 
 from appium.webdriver.common.appiumby import AppiumBy
@@ -33,10 +34,13 @@ def flashing(lasting_time):
     定时划到下一个视频
     :return:
     """
-    for i in range(lasting_time * 2 + 2):
+    # 随机化时间
+    lasting_time += random.randint(1, 4)
+    print("开始刷视频,总共会执行 " + str(lasting_time * 2 + 2) + " 次模拟滑动")
+    for i in range(lasting_time * 2):
         conti()
-        sleep(30)
-        print(i)
+        sleep(30 + random.randint(-10, 10))
+        print("正在执行第 " + str(i) + " 次模拟滑动")
         # swipe.perform_swipe_down(500, 500)
         swipe.perform_swipe_down_percent(40, 500)
 
