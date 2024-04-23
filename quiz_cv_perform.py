@@ -65,9 +65,6 @@ def start(img=cv2.imread('./Screenshots/normal.png')):
                           (choice['x'] + choice['w'], choice['y'] + choice['h']), (37, 150, 190, 1), 2)
             cv2.putText(img, "Ans" + str(i), (choice['x'], choice['y']), cv2.FONT_HERSHEY_SIMPLEX, 0.8,
                         (0, 0, 255), 2)
-            # answer = img[choice['y']:choice['y'] + choice['h'], choice['x']:choice['x'] + choice['w']]
-            # check_color(answer)
-            # text_cv = read_img(answer)
             i += 1
 
         cv2.imshow("img", img)

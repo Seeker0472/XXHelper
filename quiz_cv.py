@@ -11,10 +11,6 @@ import threading
 from thefuzz import fuzz
 from thefuzz import process
 
-result_queue = queue.Queue()
-# TODO: 未完成
-last_status = None
-
 GPT = False
 
 con = sqlite3.connect('main.sqlite')
@@ -40,75 +36,12 @@ def answering():
     """
     i = 1
     while not_finished():
-        # 如果队列为空,则读取屏幕
-        if result_queue.empty():
-            # read_screen()
-            threading.Thread(target=read_screen, args=(i,)).start()
-            # read_screen(i)
-            sleep(1)
-            continue
-        # 如果队列不为空,则读取队列信息
-        result = result_queue.get()
-        if result['time'] == i:
-            # 这个可能会遇到问题
-            i += 1
-            if result['type'] == 'wrong' or result['type'] =='right':
-                update_db(result)
-                # 答错了或者答对了
-                pass
-            elif result['type'] == 'not_selected':
-                # 没选
-                answer_question(result['result'])
-                pass
-            else:
-                # 未知类型
-                pass
 
+        OK, result = read_screen(i)
 
-def update_db(result):
-    """
-    更新数据库
-    判断是否答对,和是否需要更新数据库,注意模糊匹配!!!
-    :return:
-    """
-    right_ans = None
-    if result['type'] == 'right':
-        for item in result['result']['choices']:
-            if item['color'] == 1:
-                # 答对了
-                right_ans = item['text']
-
-        if last_status is None or last_status['type'] == 'first':
-            # 状态未知或者是第一次答对
-            question_id = cur.execute("SELECT id FROM Questions WHERE question=?",
-                             (result['result']['question'],)).fetchall()[0][0]
-            choices = cur.execute("SELECT choice FROM QuestionAns WHERE QUESTION_ID=?", (question_id,)).fetchall()
-            right_db = process.extractOne(right_ans, [item[0] for item in choices])
-            if right_db[1] < 90:
-                # 无法匹配
-                return
-            else:
-                cur.execute("UPDATE QuestionAns SET ok=1 WHERE QUESTION_ID=?", (question_id,))
-                cur.execute("UPDATE QuestionAns SET ok=2 WHERE QUESTION_ID=? AND CHOICE=?", (question_id, right_db[0]))
-                con.commit()
-    elif result['type'] == 'wrong':
-        for item in result['result']['choices']:
-            if item['color'] == 1:
-                # 答对了
-                right_ans = item['text']
-
-        question_id = cur.execute("SELECT id FROM Questions WHERE question=?",
-                         (result['result']['question'],)).fetchall()[0][0]
-        choices = cur.execute("SELECT choice FROM QuestionAns WHERE QUESTION_ID=?", (question_id,)).fetchall()
-        right_db = process.extractOne(right_ans, [item[0] for item in choices])
-        if right_db[1] < 90:
-            # 无法匹配
-            return
-        else:
-            cur.execute("UPDATE QuestionAns SET ok=1 WHERE QUESTION_ID=?", (question_id,))
-            cur.execute("UPDATE QuestionAns SET ok=2 WHERE QUESTION_ID=? AND CHOICE=?", (question_id, right_db[0]))
-            con.commit()
-    pass
+        if OK:
+            answer_question(result)
+            sleep(4)
 
 
 def answer_question(information):
@@ -118,22 +51,12 @@ def answer_question(information):
             "choices": [{"x": x, "y": y, "w": w, "h": h, "text": choice_text, "color": color}....]}
     :return:
     """
-    global last_status
     ok, answer = find_answer(information)
     if ok:
-        # 能从数据库中找到答案,就直接选择答案
-        last_status = {'type': 'second', 'question': information['question'], 'answer': answer}
         select_answer(answer)
     else:
-        # 不能从数据库中找到答案,先把题目和选项存入数据库
-        cur.execute("INSERT INTO Questions (question) VALUES(?)", (information['question'],))
-        question_id = cur.lastrowid
-        for choice in information['choices']:
-            cur.execute("INSERT INTO QuestionAns(QUESTION_ID, CHOICE) VALUES(?,?)", (question_id, choice['text']))
-        con.commit()
-
+        # 不能从数据库中找到答案
         result = generate_answer(information)
-        last_status = {'type': 'first', 'question': information['question'], 'answer': result}
         select_answer(result)
 
 
@@ -147,14 +70,14 @@ def find_answer(question):
     # 规范化数据格式
     question = normalize_question(question)
     result = process.extractOne(question['question'], questions_db)
-    if result[1] < 90:
+    if result[1] < 80:
         return False, None
     else:
         db_answers = cur.execute("select choice,ok from QuestionAns join Questions Q "
                                  "on QuestionAns.question_id = Q.id where Q.question=?", (result[0],)).fetchall()
         for choice in question['choices']:
             res = process.extractOne(choice['text'], [item[0] for item in db_answers])
-            if res[1] < 90:
+            if res[1] < 80:
                 return False, None
             # TODO: 修改!!!!
             # res是最佳匹配的答案,匹配数据库记录查询是否正确
@@ -234,23 +157,18 @@ def read_screen(time):
         result = start(png)
     except ValueError:
         # 如果出现ValueError,则说明没有找到选项,直接返回
-        return
+        return False, None
     colors = [item['color'] for item in result['choices']]
     if 4 in colors:
         # 有未知颜色
         pass
     if 2 in colors:
         # 有红色!,答错了
-        if 1 in colors:
-            # 有绿色,说明有正确答案
-            result_queue.put({'type': 'wrong', 'result': result, 'time': time})
-        # result_queue.put({'type': 'wrong', 'result': result})
-        pass
+        return False, None
     elif 1 in colors:
         # 只有绿色!答对了
-        result_queue.put({'type': 'right', 'result': result, 'time': time})
+        return False, None
         pass
     else:
         # 既没有红色也没有绿色,没选!
-        result_queue.put({'type': 'not_selected', 'result': result, 'time': time})
-        return
+        return True, result
