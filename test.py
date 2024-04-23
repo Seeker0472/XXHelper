@@ -36,4 +36,4 @@
 
 import quiz_cv
 
-quiz_cv.test()
+quiz_cv.start_answer()
