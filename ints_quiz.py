@@ -21,7 +21,7 @@ GPT = True
 # 是否使用CV,否则乱选(多人挑战)
 CV = False
 
-
+# TODO:把CV加入
 def start():
     """
     开始答题

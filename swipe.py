@@ -20,7 +20,7 @@ def perform_swipe_down(dist, duration=random.randint(300, 600)):
         down_swipe(dist, duration)
 
 
-def perform_swipe_down_percent(percent, duration=random.randint(300, 600)):
+def perform_swipe_down_percent(percent, duration=random.randint(400, 600)):
     """
     执行向下滑动,按照屏幕百分比
     :param duration:
