@@ -28,12 +28,26 @@
 # # print(driver.driver.page_source)
 #
 # print(type(driver.driver.get_screenshot_as_png()) == bytes)
+# from time import sleep
+#
+# from appium.webdriver.common.appiumby import AppiumBy
+#
+# # import quiz_cv_perform
+# # quiz_cv_perform.start()
+#
+# import quiz_cv
+# from driver import driver
+#
+# sleep(2)
+# while True:
+#     driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"开始比赛\")").click()
+#     sleep(5)
+#     quiz_cv.start_answer()
+#     driver.back()
+#     sleep(2)
 
 
 
-# import quiz_cv_perform
-# quiz_cv_perform.start()
+from normarize import to_recommend
 
-import quiz_cv
-
-quiz_cv.start_answer()
+to_recommend()

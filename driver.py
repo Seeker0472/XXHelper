@@ -18,4 +18,4 @@ appium_server_url = 'http://localhost:4723'
 
 driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
 
-# driver.activate_app('cn.xuexi.android')
+driver.activate_app('cn.xuexi.android')

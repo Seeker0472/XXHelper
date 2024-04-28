@@ -21,6 +21,37 @@ def to_normal():
                         value="学习").click()
 
 
+def to_recommend():
+    """
+    进入推荐
+    :return:
+    """
+    to_normal()
+    sleep(2)
+    banner = driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR,
+                                 value="new UiSelector().className(\"android.view.ViewGroup\").instance(0)")
+    while exists_recommend() is False:
+        driver.swipe(banner.location['x'] + banner.size['height'] / 2, banner.location['y'] + 10,
+                     banner.location['x'] + banner.size['height'] / 2 + banner.size['width'] * 5 / 6,
+                     banner.location['y'] + 10, 100)
+        sleep(1)
+    driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR,
+                        value="new UiSelector().text(\"推荐\")").click()
+
+
+def exists_recommend():
+    """
+    判断是否在推荐页面
+    :return:
+    """
+    try:
+        driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR,
+                            value="new UiSelector().text(\"推荐\")")
+        return True
+    except:
+        return False
+
+
 def to_bai_ling():
     """
     进入百灵
@@ -110,7 +141,8 @@ def to_sep_page(page_name, text):
             # print(title, score)
 
         # 如果当前页没有找到趣味答题,则向下滑动
-        if proceed is None or (driver.get_window_size()['height'] - proceed.location['y']) < driver.get_window_size()['height'] / 10:
+        if proceed is None or (driver.get_window_size()['height'] - proceed.location['y']) < driver.get_window_size()[
+            'height'] / 10:
             proceed = None
             # 按照屏幕高度的5%向下滑动
             swipe.perform_swipe_down_percent(10)

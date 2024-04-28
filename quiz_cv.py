@@ -1,5 +1,8 @@
 from time import sleep
 
+from appium.webdriver.common.appiumby import AppiumBy
+from selenium.common import NoSuchElementException
+
 from quiz_cv_perform import start
 from driver import driver
 import queue
@@ -35,13 +38,15 @@ def answering():
     :return:
     """
     i = 1
-    while not_finished():
+    while not not_finished():
 
         OK, result = read_screen(i)
-
         if OK:
             answer_question(result)
-            sleep(4)
+            sleep(3)
+        else:
+            sleep(0.5)
+            pass
 
 
 def answer_question(information):
@@ -140,10 +145,13 @@ def normalize_question(result):
 def not_finished():
     """
     判断是否结束,也许能实现更加智能的判断
-    同时还要点复活!
     :return:
     """
-    return True
+    try:
+        driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"继续挑战\")")
+        return True
+    except NoSuchElementException:
+        return False
 
 
 def read_screen(time):
@@ -158,17 +166,18 @@ def read_screen(time):
     except ValueError:
         # 如果出现ValueError,则说明没有找到选项,直接返回
         return False, None
-    colors = [item['color'] for item in result['choices']]
-    if 4 in colors:
-        # 有未知颜色
-        pass
-    if 2 in colors:
-        # 有红色!,答错了
-        return False, None
-    elif 1 in colors:
-        # 只有绿色!答对了
-        return False, None
-        pass
-    else:
-        # 既没有红色也没有绿色,没选!
-        return True, result
+    # colors = [item['color'] for item in result['choices']]
+    # if 4 in colors:
+    #     # 有未知颜色
+    #     pass
+    # if 2 in colors:
+    #     # 有红色!,答错了
+    #     return False, None
+    # elif 1 in colors:
+    #     # 只有绿色!答对了
+    #     return False, None
+    #     pass
+    # else:
+    #     # 既没有红色也没有绿色,没选!
+    #     return True, result
+    return True, result

@@ -21,7 +21,7 @@ def start(lasting_time=12):
     :return:
     """
 
-    normarize.to_normal()
+    normarize.to_recommend()
     select_article(lasting_time)
 
 

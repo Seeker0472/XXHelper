@@ -26,7 +26,7 @@ def start(img=cv2.imread('./Screenshots/normal.png')):
     :return:
     """
     # 读取图片,后期之间传base64
-    print(type(img))
+    # print(type(img))
     if type(img) == bytes:
         img = base64_to_cv2(img)
     elif type(img) == numpy.ndarray:
@@ -37,15 +37,20 @@ def start(img=cv2.imread('./Screenshots/normal.png')):
     # img = cv2.imread('./Screenshots/normal.png')
     # 识图的结果
     result = get_border(img)
+    if result is None:
+        raise ValueError("没有找到问题和选项")
     question = img[result['text']['y']:result['text']['y'] + result['text']['h'],
                result['text']['x']:result['text']['x'] + result['text']['w']]
+    if question.size == 0:
+        raise ValueError("没有找到问题")
 
     question_text = ""
     question_cv = read_img(question)
     for idx in range(len(question_cv)):
         res = question_cv[idx]
-        for line in res:
-            question_text += line[1][0] + " "
+        if res is not None:
+            for line in res:
+                question_text += line[1][0] + " "
     question_text = question_text[:-1]
     print(question_text)
     print(result['choices'])
@@ -115,6 +120,9 @@ def process_contours(img, contours):
 
     max_container = max(containers, key=lambda x: x['h'])
 
+    if not not_answered(contours, max_container, img):
+        return None
+
     choices_area = find_choices(contours, max_container, img)
 
     border = {'x': max_container['x'], 'y': max_container['y'], 'w': max_container['w'],
@@ -124,13 +132,32 @@ def process_contours(img, contours):
     return {"choices": choices_area, "border": border, "text": text_area}
 
 
+def not_answered(contours, max_container, img):
+    """
+    检查是否已经回答过问题
+    :param contours:
+    :param max_container:
+    :param img:
+    :return:
+    """
+    for contour in contours:
+        x, y, w, h = cv2.boundingRect(contour)
+        if w > max_container['w'] / 2 and h > max_container['h'] / 10 and max_container['x'] < x < max_container['x'] + \
+                max_container['w'] and max_container['y'] < y < max_container['y'] + max_container['h']:
+            answer = img[y:y + h, x:x + w]
+            color = check_color(answer)
+            if color == 1 or color == 2:
+                return False
+    return True
+
+
 def find_choices(contours, max_container, img):
     """
     寻找选项, 选项的宽度大于最大项的一半, 高度大于最大项的十分之一, 且在最大项的范围内
     :param img:
     :param contours:
     :param max_container:
-    :return:
+    :return:[{"x": x, "y": y, "w": w, "h": h, "text": choice_text, "color": color}.....]
     """
     results = []
     i = False
@@ -158,9 +185,9 @@ def find_choices(contours, max_container, img):
 def get_text(img, border):
     """
     获取选项框和边界之间的黑色文字(题目)
-    :param img:
-    :param border:
-    :return:
+    :param img: 图像
+    :param border:  边界
+    :return:   {"x": x, "y": y, "w": w, "h": h}
     """
     # 将BGR颜色空间转成HSV空间
     hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
@@ -195,8 +222,8 @@ def get_text(img, border):
 def check_color(item):
     """
     检查选项的颜色,从而获取状态
-    :param item:
-    :return:
+    :param item: 图像
+    :return: 1-绿色, 2-红色, 3-灰色, 4-其他
     """
     average_color_row = np.average(item, axis=0)
     average_color = np.average(average_color_row, axis=0)
@@ -211,17 +238,19 @@ def check_color(item):
         return 2
     # 检测灰色
     if 230 < average_color[0] < 250 and 230 < average_color[1] < 250 and 230 < average_color[2] < 250:
-        print("color is gray")
+        # print("color is gray")
         return 3
 
     return 4
 
 
-# From  https://blog.csdn.net/weixin_44096485/article/details/121468216
-# driver.driver.get_screenshot_as_png()返回的是base64编码的图片
-# 下次试试
 # base64转cv2
 def base64_to_cv2(base64_code):
+    """
+    将 base64 编码转换为 cv2 图像
+    :param base64_code: base64 编码
+    :return: cv2 图像
+    """
     # img_data = base64.b64decode(base64_code)
     # img_array = np.fromstring(img_data, np.uint8)
     # img = cv2.imdecode(img_array, cv2.COLOR_RGB2BGR)
