@@ -2,9 +2,9 @@ from time import sleep
 
 from General.driver import driver
 from General import normarize, swipe
-from Question.quiz_cv_perform import base64_to_cv2
+from Modules.Question.quiz_cv_perform import base64_to_cv2
 import cv2
-from Question import ocr
+from Modules.Question import ocr
 
 prev_img = None
 

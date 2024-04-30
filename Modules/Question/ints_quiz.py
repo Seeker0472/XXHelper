@@ -9,7 +9,7 @@ from General.driver import driver
 from General import normarize
 
 import sqlite3
-import ask_gpt
+import Modules.Question.ask_gpt as ask_gpt
 
 conn = sqlite3.connect('../../main.sqlite')
 cur = conn.cursor()
@@ -19,6 +19,7 @@ GPT = True
 
 # 是否使用CV,否则乱选(多人挑战)
 CV = False
+
 
 # TODO:把CV加入
 def start():
@@ -75,7 +76,7 @@ def is_challenge():
     except NoSuchElementException:
         return False
 
-
+# TODO:查询数据库
 def challenge():
     """
     开始挑战答题,暂时只答一项

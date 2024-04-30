@@ -16,7 +16,7 @@ SHOW_RESULT = False
 
 # TODO:规范化返回值!!(Half-Finish)
 
-def start(img=cv2.imread('../../Screenshots/normal.png')):
+def start(img=cv2.imread('./../../Screenshots/normal.png')):
     """
     读取图片,掉用get_border函数,获取问题和选项的位置,并在图片上标记,调用read_img函数,ocr识别问题和选项
     :param img:

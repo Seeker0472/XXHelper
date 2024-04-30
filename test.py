@@ -1,3 +1,3 @@
-from Modules.Question import ints_quiz
+from Modules.comment import start as comment_start
 
-ints_quiz.challenge()
+comment_start()

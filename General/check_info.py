@@ -1,9 +1,9 @@
 from selenium.webdriver.support.wait import WebDriverWait
 
-import swipe
-import normarize
+import General.swipe as swipe
+import General.normarize as normarize
 
-from driver import driver
+from General.driver import driver
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
 

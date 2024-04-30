@@ -31,6 +31,7 @@ def main():
 
 
 def start():
+    sleep(5)
     change = False
     while True:
         change = False
