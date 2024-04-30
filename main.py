@@ -4,14 +4,14 @@ import atexit
 
 from selenium.common import WebDriverException
 
-from vid import start as vid_start
-from check_info import check_score
-from read import start as read_start
-from quiz_every_day import start as eq_start
-from ints_quiz import start as ints_start
-from driver import driver
-from local_channel import start as local_start
-from subscribe import start as sub_start
+from Modules.vid import start as vid_start
+from General.check_info import check_score
+from Modules.read import start as read_start
+from Modules.Question.quiz_every_day import start as eq_start
+from Modules.Question.ints_quiz import start as ints_start
+from General.driver import driver
+from Modules.local_channel import start as local_start
+from Modules.subscribe import start as sub_start
 
 last_exception_time = None
 

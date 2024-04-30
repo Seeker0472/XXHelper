@@ -7,11 +7,10 @@ import sqlite3
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 
-import swipe
-from driver import driver
-import normarize
+from General.driver import driver
+from General import normarize, swipe
 
-conn = sqlite3.connect("main.sqlite")
+conn = sqlite3.connect("../main.sqlite")
 cur = conn.cursor()
 
 
@@ -45,14 +44,16 @@ def select_article(lasting_time):
                                          value="./android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView").text
             except NoSuchElementException as e:
                 continue
-            time_total += try_article(item, text, lasting_time - time_total / 60)
+            if lasting_time == 12:
+                time_total += try_article(item, text, lasting_time - time_total / 60, 60 * 7)
+            else:
+                time_total += try_article(item, text, lasting_time - time_total / 60, random.randint(60 * 1, 60 * 2))
             # print(text)
         swipe.perform_swipe_down_percent(20)
         time.sleep(1)
 
 
-def try_article(item, text, time_total_left):
-    sleep_time = 60 * 3
+def try_article(item, text, time_total_left, sleep_time=60 * 3):
     time_now = str(time.strftime('%Y-%m-%d', time.localtime(time.time())))
     times = cur.execute("select COUNT(*) from Read where title=?", (text,)).fetchall()[0][0]
     # 如果读过这篇文章,则跳过

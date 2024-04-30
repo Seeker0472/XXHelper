@@ -5,14 +5,13 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 
-from driver import driver
-import normarize
-import swipe
+from General.driver import driver
+from General import normarize
 
 import sqlite3
 import ask_gpt
 
-conn = sqlite3.connect('main.sqlite')
+conn = sqlite3.connect('../../main.sqlite')
 cur = conn.cursor()
 
 # 是否询问GPT
@@ -86,7 +85,7 @@ def challenge():
 
     sleep(3)
 
-    while True:
+    while not challenge_die():
         # 获取题目
         block = driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR,
                                     value="new UiSelector().className(\"android.view.View\").instance(13)")
@@ -172,11 +171,24 @@ def challenge_over():
     # TODO: Infinite Loop!
     try:
         driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"挑战结束\")")
+        # driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"再来一局\")")
         try:
             driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"立即复活\")").click()
             sleep(2)
         except NoSuchElementException:
             pass
+        return True
+    except NoSuchElementException:
+        return False
+
+
+def challenge_die():
+    """
+    判断是否彻底结束(复活了一次)
+    :return:
+    """
+    try:
+        driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().text(\"再来一局\")")
         return True
     except NoSuchElementException:
         return False

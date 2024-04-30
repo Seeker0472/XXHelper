@@ -3,12 +3,12 @@ from time import sleep
 
 from selenium.webdriver.common.by import By
 
-from driver import driver
-import normarize
+from General.driver import driver
+from General import normarize
 
 
 def start():
-    normarize.to_sep_page("本地频道","去看看")
+    normarize.to_sep_page("本地频道", "去看看")
     sleep(2)
     rand_open()
 

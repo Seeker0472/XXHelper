@@ -4,19 +4,14 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 
 from quiz_cv_perform import start
-from driver import driver
-import queue
 import sqlite3
-from driver import driver
+from General.driver import driver
 
-import threading
-
-from thefuzz import fuzz
 from thefuzz import process
 
 GPT = False
 
-con = sqlite3.connect('main.sqlite')
+con = sqlite3.connect('../../main.sqlite')
 cur = con.cursor()
 # 数据库中的问题
 questions_db = [item[1] for item in cur.execute("SELECT * FROM Questions").fetchall()]

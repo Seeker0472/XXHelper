@@ -1,5 +1,9 @@
 /.idea
 
-secret.py
+/Others
+
+General/secret.py
 
 *.sqlite
+
+test.py
