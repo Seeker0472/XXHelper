@@ -6,8 +6,6 @@ from Modules.Question.ocr import read_img
 SHOW_RESULT = False
 
 
-# TODO:连接到程序(Doing!)
-
 # TODO:传入base64(Half-Finish)
 
 # TODO:提高运行速度
@@ -36,21 +34,24 @@ def start(img=cv2.imread('./Screenshots/normal.png')):
     result = get_border(img)
     if result is None:
         raise ValueError("没有找到问题和选项")
-    question = img[result['text']['y']:result['text']['y'] + result['text']['h'],
-               result['text']['x']:result['text']['x'] + result['text']['w']]
-    if question.size == 0:
-        raise ValueError("没有找到问题")
-
-    question_text = ""
-    question_cv = read_img(question)
-    for idx in range(len(question_cv)):
-        res = question_cv[idx]
-        if res is not None:
-            for line in res:
-                question_text += line[1][0] + " "
-    question_text = question_text[:-1]
+    question_text = perform_ocr(result, img)
+    ## TODO:START
+    # question = img[result['text']['y']:result['text']['y'] + result['text']['h'],
+    #            result['text']['x']:result['text']['x'] + result['text']['w']]
+    # if question.size == 0:
+    #     raise ValueError("没有找到问题")
+    #
+    # question_text = ""
+    # question_cv = read_img(question)
+    # for idx in range(len(question_cv)):
+    #     res = question_cv[idx]
+    #     if res is not None:
+    #         for line in res:
+    #             question_text += line[1][0] + " "
+    # question_text = question_text[:-1]
     print(question_text)
     print(result['choices'])
+    ## TODO:END
 
     # print(question_cv)
     if SHOW_RESULT:
@@ -76,6 +77,36 @@ def start(img=cv2.imread('./Screenshots/normal.png')):
         cv2.waitKey(0)
         cv2.destroyAllWindows()
     return {"question": question_text, "choices": result['choices']}
+
+
+def perform_ocr(result, img):
+    text = ""
+    cv_result = read_img(img)
+    # print(result, cv_result)
+    for item in cv_result:
+        for line in item:
+            if in_bounds(result['max_container'], line[0]):
+                if in_bounds(result['text'], line[0]):
+                    # print(line[1][0])
+                    text += line[1][0] + " "
+                for choice in result['choices']:
+                    if in_bounds(choice, line[0]):
+                        # print(line[1][0])
+                        choice['text'] += line[1][0]
+    return text[:-1]
+
+
+def in_bounds(range, points):
+    """
+    检查点是否在范围内
+    :param range: {"x": x, "y": y, "w": w, "h": h}
+    :param points: [[x,y]....]
+    :return:
+    """
+    for point in points:
+        if not (range['x'] < point[0] < range['x'] + range['w'] and range['y'] < point[1] < range['y'] + range['h']):
+            return False
+    return True
 
 
 def get_border(img):
@@ -126,7 +157,8 @@ def process_contours(img, contours):
               'h': min(choices_area, key=lambda x: x['y'])['y'] - max_container['y']}
 
     text_area = get_text(img, border)
-    return {"choices": choices_area, "border": border, "text": text_area}
+    # text_area = None
+    return {"choices": choices_area, "border": border, "text": text_area, "max_container": max_container}
 
 
 def not_answered(contours, max_container, img):
@@ -163,16 +195,16 @@ def find_choices(contours, max_container, img):
         if w > max_container['w'] / 2 and h > max_container['h'] / 10 and max_container['x'] < x < max_container['x'] + \
                 max_container['w'] and max_container['y'] < y < max_container['y'] + max_container['h']:
             if i:
-                # TODO:颜色检测!!
                 answer = img[y:y + h, x:x + w]
                 color = check_color(answer)
-                text_cv = read_img(answer)
                 choice_text = ""
-                for idx in range(len(text_cv)):
-                    res = text_cv[idx]
-                    for line in res:
-                        choice_text += line[1][0] + " "
-                choice_text = choice_text[:-1]
+                # text_cv = read_img(answer)
+                # choice_text = ""
+                # for idx in range(len(text_cv)):
+                #     res = text_cv[idx]
+                #     for line in res:
+                #         choice_text += line[1][0] + " "
+                # choice_text = choice_text[:-1]
                 results.append({"x": x, "y": y, "w": w, "h": h, "text": choice_text, "color": color})
             i = not i
 
