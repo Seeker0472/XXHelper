@@ -11,7 +11,7 @@ from thefuzz import process
 
 GPT = False
 
-con = sqlite3.connect('../../main.sqlite')
+con = sqlite3.connect('./main.sqlite')
 cur = con.cursor()
 # 数据库中的问题
 questions_db = [item[1] for item in cur.execute("SELECT * FROM Questions").fetchall()]

@@ -10,7 +10,15 @@ from selenium.webdriver.common.by import By
 from General.driver import driver
 from General import normarize, swipe
 
-conn = sqlite3.connect("../main.sqlite")
+import os
+#
+# # 获取上一层目录的绝对路径
+# parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.curdir))
+# print(os.path.join(parent_dir, 'main.sqlite'))
+# # 连接数据库
+# # conn = sqlite3.connect(os.path.join(parent_dir, 'main.sqlite'))
+
+conn = sqlite3.connect("./main.sqlite")
 cur = conn.cursor()
 
 

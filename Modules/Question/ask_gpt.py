@@ -6,7 +6,8 @@ client = OpenAI(
     base_url=Open_AI_MIRROR_URL
 )
 
-def ask_gpt3(text,contents):
+
+def ask_gpt3(text, contents):
     """
     问答,返回问题的答案
     :param text: 问题

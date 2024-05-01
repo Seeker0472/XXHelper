@@ -11,7 +11,7 @@ from General import normarize
 import sqlite3
 import Modules.Question.ask_gpt as ask_gpt
 
-conn = sqlite3.connect('../../main.sqlite')
+conn = sqlite3.connect('./main.sqlite')
 cur = conn.cursor()
 
 # 是否询问GPT
