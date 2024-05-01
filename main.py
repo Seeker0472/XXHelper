@@ -12,6 +12,7 @@ from Modules.Question.ints_quiz import start as ints_start
 from General.driver import driver
 from Modules.local_channel import start as local_start
 from Modules.subscribe import start as sub_start
+from Modules.comment import start as comment_start
 
 last_exception_time = None
 
@@ -42,7 +43,7 @@ def start():
             eq_start()
             sleep(1)
         if result['趣味答题'] < 8:
-        # if result['趣味答题'] < 8 or True:
+            # if result['趣味答题'] < 8 or True:
             change = True
             ints_start()
             sleep(1)
@@ -61,6 +62,11 @@ def start():
         if result['订阅'] != 2:
             change = True
             sub_start(2 - result['订阅'])
+            sleep(1)
+        if result['发表观点'] != 1:
+            change = True
+            comment_start()
+            sleep(1)
         if not change:
             return "All Done!"
 
