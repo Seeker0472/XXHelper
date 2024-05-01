@@ -7,7 +7,7 @@ from selenium.webdriver.common.by import By
 
 from General.driver import driver
 from General import normarize
-
+from Modules.Question.quiz_cv import start_answer as cv_start
 import sqlite3
 import Modules.Question.ask_gpt as ask_gpt
 
@@ -18,7 +18,7 @@ cur = conn.cursor()
 GPT = True
 
 # 是否使用CV,否则乱选(多人挑战)
-CV = False
+CV = True
 
 
 # TODO:把CV加入
@@ -52,7 +52,7 @@ def check_type():
             driver.find_element(by=By.XPATH,
                                 value="//android.view.View[@text=\"随机匹配\"]/../android.view.View").click()
             if CV:
-                pass
+                cv_start()
             else:
                 pair()
         if is_four():
@@ -60,7 +60,7 @@ def check_type():
             driver.find_element(by=By.XPATH,
                                 value="//android.view.View[@text=\"开始比赛\"]").click()
             if CV:
-                pass
+                cv_start()
             else:
                 pair()
 

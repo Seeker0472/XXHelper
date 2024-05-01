@@ -42,6 +42,7 @@ def start():
             eq_start()
             sleep(1)
         if result['趣味答题'] < 8:
+        # if result['趣味答题'] < 8 or True:
             change = True
             ints_start()
             sleep(1)

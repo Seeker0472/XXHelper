@@ -52,7 +52,7 @@ def select_article(lasting_time):
                                          value="./android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView").text
             except NoSuchElementException as e:
                 continue
-            if lasting_time == 12:
+            if lasting_time-time_total/60 == 12:
                 time_total += try_article(item, text, lasting_time - time_total / 60, 60 * 7)
             else:
                 time_total += try_article(item, text, lasting_time - time_total / 60, random.randint(60 * 1, 60 * 2))

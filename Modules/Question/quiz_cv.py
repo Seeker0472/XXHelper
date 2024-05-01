@@ -3,7 +3,7 @@ from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 
-from quiz_cv_perform import start
+from Modules.Question.quiz_cv_perform import start
 import sqlite3
 from General.driver import driver
 
