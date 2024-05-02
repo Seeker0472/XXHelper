@@ -1,6 +1,5 @@
 import cv2
 import numpy
-import numpy as np
 from Modules.Question.ocr import read_img
 
 SHOW_RESULT = False
@@ -254,8 +253,8 @@ def check_color(item):
     :param item: 图像
     :return: 1-绿色, 2-红色, 3-灰色, 4-其他
     """
-    average_color_row = np.average(item, axis=0)
-    average_color = np.average(average_color_row, axis=0)
+    average_color_row = numpy.average(item, axis=0)
+    average_color = numpy.average(average_color_row, axis=0)
     # print("avg::  " + str(average_color))
     # 检测绿色
     if 110 < average_color[0] < 130 and 190 < average_color[1] < 210 and 30 < average_color[2] < 50:
@@ -281,10 +280,10 @@ def base64_to_cv2(base64_code):
     :return: cv2 图像
     """
     # img_data = base64.b64decode(base64_code)
-    # img_array = np.fromstring(img_data, np.uint8)
+    # img_array = numpy.fromstring(img_data, numpy.uint8)
     # img = cv2.imdecode(img_array, cv2.COLOR_RGB2BGR)
     # 将二进制数据转换为 numpy 数组
-    image_array = np.frombuffer(base64_code, dtype=np.uint8)
+    image_array = numpy.frombuffer(base64_code, dtype=numpy.uint8)
 
     # 使用 OpenCV 解码图像数据
     image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)

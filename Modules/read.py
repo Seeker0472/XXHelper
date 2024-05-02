@@ -55,7 +55,7 @@ def select_article(lasting_time):
             if lasting_time-time_total/60 == 12:
                 time_total += try_article(item, text, lasting_time - time_total / 60, 60 * 7)
             else:
-                time_total += try_article(item, text, lasting_time - time_total / 60, random.randint(60 * 1, 60 * 2))
+                time_total += try_article(item, text, lasting_time - time_total / 60, random.randint(60 * 1, 45 * 2))
             # print(text)
         swipe.perform_swipe_down_percent(20)
         time.sleep(1)

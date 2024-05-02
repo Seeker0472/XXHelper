@@ -13,6 +13,7 @@ from General.driver import driver
 from Modules.local_channel import start as local_start
 from Modules.subscribe import start as sub_start
 from Modules.comment import start as comment_start
+from Modules.send_msg import start as send_msg_start
 
 last_exception_time = None
 
@@ -68,7 +69,8 @@ def start():
             comment_start()
             sleep(1)
         if not change:
-            return "All Done!"
+            send_msg_start()
+            return 0
 
 
 def exit_handler():
