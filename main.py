@@ -1,5 +1,11 @@
-import time
+from General.appium_service import start as appium_start
 from time import sleep
+# TODO:优化代码结构
+appium_start()
+sleep(2)
+
+import time
+
 import atexit
 
 from selenium.common import WebDriverException
