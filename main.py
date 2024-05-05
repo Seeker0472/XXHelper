@@ -1,5 +1,6 @@
 from General.appium_service import start as appium_start
 from time import sleep
+
 # TODO:优化代码结构
 appium_start()
 sleep(2)
@@ -26,16 +27,19 @@ last_exception_time = None
 
 def main():
     global last_exception_time
-    try:
-        start()
-    except Exception as e:
-        if last_exception_time is not None:
-            if time.time() - last_exception_time < 60:
-                return
-        last_exception_time = time.time()
-        print(e)
-        sleep(10)
-        main()
+    while True:
+        try:
+            if start() == 0:
+                break
+        except Exception as e:
+            if last_exception_time is not None:
+                if time.time() - last_exception_time < 60:
+                    print("短期内连续两次异常,退出")
+                    print(e)
+                    return
+            last_exception_time = time.time()
+            print(e)
+            sleep(10)
 
 
 def start():
