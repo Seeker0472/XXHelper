@@ -4,8 +4,8 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
-import General.swipe as swipe
-from General.driver import driver
+from ..General import swipe as swipe
+from ..General.driver import driver
 
 
 def to_normal():

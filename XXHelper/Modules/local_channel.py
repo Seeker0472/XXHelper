@@ -3,8 +3,8 @@ from time import sleep
 
 from selenium.webdriver.common.by import By
 
-from General.driver import driver
-from General import normarize
+from ..General.driver import driver
+from ..General import normarize
 
 
 def start():

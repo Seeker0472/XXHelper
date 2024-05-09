@@ -5,8 +5,8 @@ from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
-from General import normarize, swipe
-from General.driver import driver
+from ...General import normarize, swipe
+from ...General.driver import driver
 
 
 def start():

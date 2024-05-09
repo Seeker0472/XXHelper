@@ -6,9 +6,9 @@ from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 
-from General.driver import driver
-from General import normarize
-from General.variables import comments
+from ..General.driver import driver
+from ..General import normarize
+from ..General.variables import comments
 
 
 #TODO:更加智能地发表回复,添加到main中

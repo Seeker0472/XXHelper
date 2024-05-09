@@ -1,6 +1,6 @@
 import cv2
 import numpy
-from Modules.Question.ocr import read_img
+from ...Modules.Question.ocr import read_img
 
 SHOW_RESULT = False
 

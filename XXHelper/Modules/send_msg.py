@@ -5,13 +5,13 @@ import requests
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.support.wait import WebDriverWait
 
-from General.secret import WeChat_APPID, WeChat_APPSECRET, WeChat_Receiver_OpenID, OSS_Auth
+from ..General.secret import WeChat_APPID, WeChat_APPSECRET, WeChat_Receiver_OpenID, OSS_Auth
 import oss2
 import numpy, cv2
-from General.normarize import to_normal
-from General.driver import driver
+from ..General.normarize import to_normal
+from ..General.driver import driver
 import time
-from General.check_info import check_score
+from ..General.check_info import check_score
 
 
 def get_wechat_access_token():

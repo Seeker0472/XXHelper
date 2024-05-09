@@ -5,11 +5,11 @@ from appium.webdriver.common.appiumby import AppiumBy
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 
-from General.driver import driver
-from General import normarize
-from Modules.Question.quiz_cv import start_answer as cv_start
+from ...General.driver import driver
+from ...General import normarize
+from ...Modules.Question.quiz_cv import start_answer as cv_start
 import sqlite3
-import Modules.Question.ask_gpt as ask_gpt
+from ...Modules.Question import ask_gpt as ask_gpt
 
 conn = sqlite3.connect('./main.sqlite')
 cur = conn.cursor()

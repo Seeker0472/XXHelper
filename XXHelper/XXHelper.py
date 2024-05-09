@@ -1,7 +1,8 @@
-from General.appium_service import start as appium_start
+from .General.appium_service import start as appium_start
 from time import sleep
 
 # TODO:优化代码结构
+#TODO: Catch NoSuchElementException,重新启动程序
 appium_start()
 sleep(2)
 
@@ -11,16 +12,16 @@ import atexit
 
 from selenium.common import WebDriverException
 
-from Modules.vid import start as vid_start
-from General.check_info import check_score
-from Modules.read import start as read_start
-from Modules.Question.quiz_every_day import start as eq_start
-from Modules.Question.ints_quiz import start as ints_start
-from General.driver import driver
-from Modules.local_channel import start as local_start
-from Modules.subscribe import start as sub_start
-from Modules.comment import start as comment_start
-from Modules.send_msg import start as send_msg_start
+from .Modules.vid import start as vid_start
+from .General.check_info import check_score
+from .Modules.read import start as read_start
+from .Modules.Question.quiz_every_day import start as eq_start
+from .Modules.Question.ints_quiz import start as ints_start
+from .General.driver import driver
+from .Modules.local_channel import start as local_start
+from .Modules.subscribe import start as sub_start
+from .Modules.comment import start as comment_start
+from .Modules.send_msg import start as send_msg_start
 
 last_exception_time = None
 

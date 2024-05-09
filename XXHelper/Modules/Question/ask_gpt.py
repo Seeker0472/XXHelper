@@ -1,5 +1,5 @@
 from openai import OpenAI
-from General.secret import Open_AI_API_KEY, Open_AI_MIRROR_URL
+from ...General.secret import Open_AI_API_KEY, Open_AI_MIRROR_URL
 
 client = OpenAI(
     api_key=Open_AI_API_KEY,

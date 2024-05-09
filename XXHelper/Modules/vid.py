@@ -4,8 +4,8 @@ from time import sleep
 from appium.webdriver.common.appiumby import AppiumBy
 from selenium.webdriver.common.by import By
 
-from General.driver import driver
-from General import normarize, swipe
+from ..General.driver import driver
+from ..General import normarize, swipe
 
 
 def start(lasting_time=12):

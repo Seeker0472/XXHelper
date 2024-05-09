@@ -7,3 +7,7 @@ General/secret.py
 *.sqlite
 
 test.py
+
+/Screenshots
+
+secret.py

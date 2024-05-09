@@ -2,7 +2,7 @@ from time import sleep
 
 from selenium.common import InvalidElementStateException
 
-from General.driver import driver
+from ..General.driver import driver
 import random
 
 

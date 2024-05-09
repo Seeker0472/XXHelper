@@ -7,8 +7,8 @@ import sqlite3
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
 
-from General.driver import driver
-from General import normarize, swipe
+from ..General.driver import driver
+from ..General import normarize, swipe
 
 import os
 #
@@ -53,7 +53,7 @@ def select_article(lasting_time):
             except NoSuchElementException as e:
                 continue
             if lasting_time-time_total/60 == 12:
-                time_total += try_article(item, text, lasting_time - time_total / 60, 60 * 7)
+                time_total += try_article(item, text, lasting_time - time_total / 60, 60 * 6)
             else:
                 time_total += try_article(item, text, lasting_time - time_total / 60, random.randint(60 * 1, 45 * 2))
             # print(text)
