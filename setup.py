@@ -5,7 +5,7 @@ from distutils.core import setup
 setup(
     name='XXHelper',
     version='0.0.1',
-    description='Gpt powered subtitle translation tool.',
+    description='A useful tool',
     author='Seeker472',
     author_email='gmx472@qq.com',
     url='https://seekerer.com',

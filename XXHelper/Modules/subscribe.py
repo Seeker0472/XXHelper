@@ -25,9 +25,12 @@ def start_QGH(left):
     normarize.to_sep_page("订阅", "去看看")
     sleep(8)
     while left > 0:
+        last_left = left
         if index >= 9:
             break
         left = read_screen(left)
+        if last_left==left:
+            print("这一页都订阅完了,以后配合 DB 来避免没必要的评论!")
         goto_module(index)
         index += 1
     return left
@@ -42,7 +45,7 @@ def start_DFPT(left):
         if index >= 4:
             break
         left = read_screen(left)
-        goto_module(index)
+        goto_module_DFPT(index)
         index += 1
     return left
 
@@ -107,7 +110,7 @@ def different(img_now):
         prev_img = img_now
         return True
     else:
-        ret = cv2.absdiff(prev_img, img_now).sum() > 100
+        ret = cv2.absdiff(prev_img, img_now).sum() > 3000000
         prev_img = img_now
         return ret
     pass

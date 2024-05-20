@@ -76,7 +76,7 @@ def try_article(item, text, time_total_left, sleep_time=60 * 3):
         print("检测到视频: " + text)
         driver.back()
         return 0
-    print("剩余总时间(min): " + str(time_total_left) + "开始阅读: " + text)
+    print("剩余总时间(min): " + str(int(time_total_left)) + "开始阅读: " + text)
     fake_swipe(sleep_time)
     driver.back()
     quit_bookshelf()
