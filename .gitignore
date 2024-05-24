@@ -2,7 +2,7 @@
 
 /Others
 
-General/secret.py
+secret.py
 
 *.sqlite
 
@@ -10,4 +10,4 @@ test.py
 
 /Screenshots
 
-secret.py
+*.egg-info

@@ -25,7 +25,6 @@ def start():
 def answer():
     """
     回答一道题目
-    TODO:未完成
     :return:
     """
     while True:
@@ -150,7 +149,8 @@ def get_text():
 
 def handle_fill():
     """
-    处理填空题, 未完成
+    处理填空题
+    TODO:多个空
     :return:
     """
     text_edit = driver.find_element(by=AppiumBy.ANDROID_UIAUTOMATOR, value="new UiSelector().className("

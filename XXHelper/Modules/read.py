@@ -10,7 +10,10 @@ from selenium.webdriver.common.by import By
 from ..General.driver import driver
 from ..General import normarize, swipe
 
+from ..General.db import get_connection, close_connection
+
 import os
+
 #
 # # 获取上一层目录的绝对路径
 # parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.curdir))
@@ -18,8 +21,8 @@ import os
 # # 连接数据库
 # # conn = sqlite3.connect(os.path.join(parent_dir, 'main.sqlite'))
 
-conn = sqlite3.connect("./main.sqlite")
-cur = conn.cursor()
+conn = None
+cur = None
 
 
 def start(lasting_time=12):
@@ -27,9 +30,11 @@ def start(lasting_time=12):
     开始
     :return:
     """
-
+    global cur,conn
+    cur,conn = get_connection()
     normarize.to_recommend()
     select_article(lasting_time)
+    close_connection(cur)
 
 
 def select_article(lasting_time):
@@ -52,7 +57,7 @@ def select_article(lasting_time):
                                          value="./android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.TextView").text
             except NoSuchElementException as e:
                 continue
-            if lasting_time-time_total/60 == 12:
+            if lasting_time - time_total / 60 == 12:
                 time_total += try_article(item, text, lasting_time - time_total / 60, 60 * 6)
             else:
                 time_total += try_article(item, text, lasting_time - time_total / 60, random.randint(60 * 1, 45 * 2))

@@ -11,8 +11,10 @@ from ...Modules.Question.quiz_cv import start_answer as cv_start
 import sqlite3
 from ...Modules.Question import ask_gpt as ask_gpt
 
-conn = sqlite3.connect('./main.sqlite')
-cur = conn.cursor()
+from ...General.db import get_connection,close_connection
+
+conn = None
+cur = None
 
 # 是否询问GPT
 GPT = True
@@ -28,12 +30,17 @@ def start():
     进入答题界面,然后调用check_type()判断是什么类型的答题
     :return:
     """
+    global cur,conn
+    cur,conn = get_connection()
 
     normarize.to_sep_page("趣味答题", "去看看")
 
     sleep(10)
 
     check_type()
+
+    close_connection(cur)
+
 
 
 def check_type():
@@ -75,6 +82,7 @@ def is_challenge():
         return True
     except NoSuchElementException:
         return False
+
 
 # TODO:查询数据库
 def challenge():

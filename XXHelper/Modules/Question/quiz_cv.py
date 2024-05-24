@@ -6,6 +6,7 @@ from selenium.common import NoSuchElementException
 from ...Modules.Question.quiz_cv_perform import start
 import sqlite3
 from ...General.driver import driver
+from ...General.db import get_connection, close_connection
 
 from thefuzz import process
 
@@ -15,6 +16,7 @@ con = sqlite3.connect('./main.sqlite')
 cur = con.cursor()
 # 数据库中的问题
 questions_db = [item[1] for item in cur.execute("SELECT * FROM Questions").fetchall()]
+cur.close()
 
 
 def start_answer():
@@ -23,8 +25,10 @@ def start_answer():
     wrapper_function
     :return:
     """
+    global cur, con
+    cur, con = get_connection()
     answering()
-    pass
+    close_connection(cur)
 
 
 def answering():
